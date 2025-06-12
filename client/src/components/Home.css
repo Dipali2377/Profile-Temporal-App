@@ -1,0 +1,207 @@
+/* src/pages/Home.css */
+
+/* Reuse color variables from Profile.css or define them again for clarity/portability */
+:root {
+  --primary-purple: #8a2be2;
+  --dark-purple: #5a1f99;
+  --background-dark: #1a1a1a;
+  --text-light: #f0f0f0;
+  --text-muted: #b0b0b0;
+  --shadow-dark: rgba(0, 0, 0, 0.6);
+  --button-shadow-base: rgba(0, 0, 0, 0.3);
+  --button-shadow-hover: rgba(0, 0, 0, 0.5);
+  --button-glow-home: rgba(
+    138,
+    43,
+    226,
+    0.4
+  ); /* Stronger glow for home page CTA */
+}
+
+/* Base Home Container */
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+  padding: 80px 20px; /* Padding to account for Navbar */
+  background: var(--background-dark); /* Inherit dark background */
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Roboto", Oxygen,
+    Ubuntu, Cantarell, "Open Sans", sans-serif;
+  text-align: center;
+  position: relative;
+  overflow: hidden; /* Hide overflow from background elements */
+  /* Re-applying the radial gradients for a consistent background feel */
+  background: radial-gradient(
+      circle at top left,
+      rgba(138, 43, 226, 0.12) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(255, 0, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    var(--background-dark);
+}
+
+/* Subtle Animated Texture (Optional, consistent with profile page) */
+.home-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g fill="%233A3A3A" fill-opacity="0.08" opacity="0.1"><path d="M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h96v-95h4v95zM10 90h80V10H10v80zm10-10h60V20H20v60zm10-10h40V30H30v40z" fill="none" stroke="%233A3A3A" stroke-width="0.5" /></g></svg>')
+    repeat;
+  opacity: 0.8;
+  z-index: 0; /* Behind content */
+  animation: backgroundPan 60s linear infinite;
+}
+
+@keyframes backgroundPan {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+/* Content Box */
+.home-content {
+  max-width: 800px; /* Limit content width for readability */
+  padding: 40px;
+  background-color: rgba(
+    36,
+    36,
+    36,
+    0.5
+  ); /* Semi-transparent dark background for content card */
+  border-radius: 20px;
+  box-shadow: 0 15px 30px var(--shadow-dark); /* Shadow for lift */
+  z-index: 1; /* Above background elements */
+  animation: fadeInSlideUp 1s ease-out forwards; /* Apply animation */
+}
+
+/* Headlines */
+.home-content h1 {
+  font-size: 3.5em;
+  color: var(--text-light);
+  margin-bottom: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Paragraph Text */
+.home-content p {
+  font-size: 1.2em;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Call to Action Button */
+.home-button {
+  display: inline-flex; /* Allows icon and text on one line */
+  align-items: center;
+  gap: 10px; /* Space between text and icon */
+  padding: 15px 35px;
+  border: none;
+  border-radius: 50px; /* Pill shape */
+  background: linear-gradient(
+    90deg,
+    var(--primary-purple) 0%,
+    var(--dark-purple) 100%
+  );
+  color: white;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease, box-shadow 0.4s ease;
+  box-shadow: 0 6px 15px var(--button-shadow-base),
+    0 0 25px var(--button-glow-home); /* Prominent purple glow */
+}
+
+.home-button:hover {
+  background: linear-gradient(
+    90deg,
+    var(--dark-purple) 0%,
+    var(--primary-purple) 100%
+  );
+  transform: translateY(-5px); /* Lift more on hover */
+  box-shadow: 0 10px 25px var(--button-shadow-hover),
+    0 0 40px var(--button-glow-home); /* Stronger glow on hover */
+}
+
+.home-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px var(--button-shadow-base);
+}
+
+.home-button-icon {
+  font-size: 1.2em;
+  transition: transform 0.3s ease;
+}
+
+.home-button:hover .home-button-icon {
+  transform: translateX(5px); /* Arrow moves right on hover */
+}
+
+.home-logged-in-message {
+  font-size: 1.1em;
+  color: var(--primary-purple); /* Highlight message in purple */
+  margin-top: 30px;
+  font-weight: 600;
+}
+
+/* Fade-in Animation (copied from Profile.css) */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .home-content {
+    padding: 30px;
+    margin: 0 15px; /* Add horizontal margin */
+  }
+
+  .home-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+  }
+
+  .home-content p {
+    font-size: 1em;
+    margin-bottom: 30px;
+  }
+
+  .home-button {
+    padding: 12px 25px;
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-content h1 {
+    font-size: 2em;
+  }
+
+  .home-content p {
+    font-size: 0.9em;
+  }
+
+  .home-button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+}

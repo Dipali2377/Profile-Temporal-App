@@ -1,0 +1,105 @@
+/* src/components/Navbar.css */
+
+/* Define purple theme variables for consistency */
+:root {
+  --primary-purple: #8a2be2; /* A vibrant Royal Blue-ish purple */
+  --dark-purple: #5a1f99; /* Deeper purple for hover states and button gradients */
+  --text-light: #f0f0f0; /* Light text for readability */
+  --button-hover-dark: #3a3a3a; /* Dark background on hover for subtle effect */
+  --button-shadow-base: rgba(0, 0, 0, 0.3); /* Base shadow for lift */
+  --button-shadow-hover: rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+}
+
+.navbar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 15px;
+  /* Crucial: Ensure no background or border on the nav itself */
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.navbar-button {
+  padding: 12px 28px;
+  border: none; /* No border by default */
+  border-radius: 50px; /* Highly rounded, pill-shaped button */
+  cursor: pointer;
+  font-size: 1.05em;
+  font-weight: 500;
+  color: var(--text-light); /* Light text color */
+  transition: all 0.3s ease; /* Smooth transitions */
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow: 0 4px 10px var(--button-shadow-base); /* Base shadow for depth */
+}
+
+/* Specific styling for the Logout button, based on the image provided */
+.logout-button {
+  background: linear-gradient(
+    90deg,
+    #6a5acd 0%,
+    #483d8b 100%
+  ); /* Medium slate blue to dark slate blue gradient */
+  color: white; /* White text for contrast */
+  box-shadow: 0 4px 10px var(--button-shadow-base); /* Ensure it has shadow */
+}
+
+.logout-button:hover {
+  background: linear-gradient(
+    90deg,
+    #483d8b 0%,
+    #6a5acd 100%
+  ); /* Reverse gradient on hover */
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--button-shadow-hover); /* More pronounced shadow on hover */
+}
+
+.logout-button:active {
+  transform: translateY(0);
+  background: #483d8b; /* Solid darker color on click */
+  box-shadow: 0 2px 5px var(--button-shadow-base);
+}
+
+/* Styling for the Login button (if it were present), to keep it consistent */
+.login-button {
+  background: linear-gradient(
+    90deg,
+    var(--primary-purple) 0%,
+    var(--dark-purple) 100%
+  ); /* Purple gradient */
+  color: white; /* White text for contrast */
+  box-shadow: 0 4px 10px var(--button-shadow-base);
+}
+
+.login-button:hover {
+  background: linear-gradient(
+    90deg,
+    var(--dark-purple) 0%,
+    var(--primary-purple) 100%
+  );
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--button-shadow-hover);
+}
+
+.login-button:active {
+  transform: translateY(0);
+  background: var(--dark-purple);
+  box-shadow: 0 2px 5px var(--button-shadow-base);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .navbar {
+    top: 15px;
+    right: 15px;
+    gap: 10px;
+  }
+  .navbar-button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+}
