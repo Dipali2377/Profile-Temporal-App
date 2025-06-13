@@ -10,8 +10,8 @@ const Home = () => {
       <div className="home-content animated-fade-in">
         <h1>Your Digital Identity, Perfected.</h1>
         <p>
-          Seamlessly manage your personal details, showcase your achievements,
-          and connect with your network. Your profile, your control.
+          Keep your personal data up-to-date, effortlessly. <br /> Smart
+          automation and secure access in one place.
         </p>
         {!isAuthenticated && (
           <button onClick={() => loginWithRedirect()} className="home-button">

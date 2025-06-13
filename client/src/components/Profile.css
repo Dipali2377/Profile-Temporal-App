@@ -388,13 +388,13 @@
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
   align-self: center;
   min-width: 180px;
-  box-shadow: 0 6px 15px rgb(187, 98, 242);
 }
 
 .profile-form button:hover {
   background: linear-gradient(90deg, var(--dark-purple) 0%, #6a2cbf 100%);
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px var(--shadow-hover);
+  /* box-shadow: 0 12px 25px var(--shadow-hover); */
+  box-shadow: 0 6px 15px rgb(187, 98, 242);
 }
 
 .profile-form button:active {
