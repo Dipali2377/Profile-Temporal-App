@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Profile.css";
 import avatar from "../assets/avatar.png";
+import { toast } from "react-toastify";
 
 // Import icons from react-icons/fa
 import {
@@ -18,7 +19,17 @@ import {
 const Profile = () => {
   const { user, isAuthenticated } = useAuth0();
 
+  // State for displaying the profile data (updates only on save or initial fetch)
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+    city: "",
+    pincode: "",
+  });
+
+  // State for the editable form fields (updates dynamically as user types)
+  const [editFormData, setEditFormData] = useState({
     firstName: "",
     lastName: "",
     phoneNumber: "",
@@ -28,6 +39,7 @@ const Profile = () => {
 
   const [loading, setLoading] = useState(true);
 
+  // useEffect to fetch user data and initialize both formData and editFormData
   useEffect(() => {
     const fetchUser = async () => {
       if (isAuthenticated && user?.email) {
@@ -35,55 +47,118 @@ const Profile = () => {
           const res = await axios.get(
             `http://localhost:5000/users/${user.email}`
           );
+          const userData = res.data.user;
+
+          // Set both display and edit states with fetched data
           setFormData({
-            firstName: res.data.user.firstName || "",
-            lastName: res.data.user.lastName || "",
-            phoneNumber: res.data.user.phoneNumber || "",
-            city: res.data.user.city || "",
-            pincode: res.data.user.pincode || "",
+            firstName: userData.firstName || "",
+            lastName: userData.lastName || "",
+            phoneNumber: userData.phoneNumber || "",
+            city: userData.city || "",
+            pincode: userData.pincode || "",
+          });
+          setEditFormData({
+            firstName: userData.firstName || "",
+            lastName: userData.lastName || "",
+            phoneNumber: userData.phoneNumber || "",
+            city: userData.city || "",
+            pincode: userData.pincode || "",
           });
           setLoading(false);
         } catch (error) {
-          console.error("Failed to fetch user data", error.message);
+          console.error("Failed to fetch user data:", error.message);
           setLoading(false);
+          // Optionally, set initial form data to empty if fetch fails
+          setFormData({
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            city: "",
+            pincode: "",
+          });
+          setEditFormData({
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            city: "",
+            pincode: "",
+          });
         }
       } else {
         setLoading(false); // If not authenticated or no email, stop loading
+        // Clear data if not authenticated
+        setFormData({
+          firstName: "",
+          lastName: "",
+          phoneNumber: "",
+          city: "",
+          pincode: "",
+        });
+        setEditFormData({
+          firstName: "",
+          lastName: "",
+          phoneNumber: "",
+          city: "",
+          pincode: "",
+        });
       }
     };
 
     fetchUser();
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user]); // Depend on isAuthenticated and user object for re-fetch
 
+  // Handler for input changes - updates only editFormData
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setEditFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handler for saving changes - updates backend and then formData
   const handleSave = async () => {
     try {
-      await axios.put(`http://localhost:5000/users/${user.email}`, formData);
-      alert("Profile updated successfully!");
+      // Send the editFormData to the backend
+      await axios.put(
+        `http://localhost:5000/users/${user.email}`,
+        editFormData
+      );
+
+      // ONLY after successful backend update, update the displayed formData
+      setFormData(editFormData);
+
+      // --- Integrate React Toastify for success here ---
+      // For example: toast.success("Profile updated successfully!");
+
+      toast.success("Profile updated successfully");
+      // Placeholder for toast
     } catch (error) {
       console.error("Update failed:", error.message);
-      alert("Failed to update profile.");
+      // --- Integrate React Toastify for error here ---
+      // For example: toast.error("Failed to update profile. Please try again.");
+      console.error("Failed to update profile."); // Placeholder for toast
     }
   };
 
   if (loading) return <p className="loading">Loading profile...</p>;
 
+  // Ensure user data is available before rendering the main profile content
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="profile-container animated-fade-in">
+        <p className="not-logged-in-message">
+          Please log in to view your profile.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="profile-container animated-fade-in">
-      {" "}
-      {/* Added animation class */}
       <div className="profile-left">
-        <img src={user?.picture || avatar} alt="Profile" />{" "}
-        {/* Use user's Auth0 picture if available */}
+        <img src={user?.picture || avatar} alt="Profile" />
         <h2>{user?.name || "Guest User"}</h2>
         <p>
           <FaEnvelope className="icon" /> {user?.email}
-        </p>{" "}
-        {/* Email with icon */}
+        </p>
         <div className="profile-info">
           <div>
             <strong>
@@ -120,18 +195,15 @@ const Profile = () => {
       <div className="profile-right">
         <h3>
           <FaEdit className="icon" /> Edit Profile
-        </h3>{" "}
-        {/* Edit icon for heading */}
+        </h3>
         <form className="profile-form">
           <div className="input-group">
-            {" "}
-            {/* Wrapper for icon + input */}
             <FaUser className="input-icon" />
             <input
               type="text"
               name="firstName"
               placeholder="First Name"
-              value={formData.firstName}
+              value={editFormData.firstName}
               onChange={handleChange}
             />
           </div>
@@ -141,7 +213,7 @@ const Profile = () => {
               type="text"
               name="lastName"
               placeholder="Last Name"
-              value={formData.lastName}
+              value={editFormData.lastName}
               onChange={handleChange}
             />
           </div>
@@ -151,7 +223,7 @@ const Profile = () => {
               type="text"
               name="phoneNumber"
               placeholder="Phone Number"
-              value={formData.phoneNumber}
+              value={editFormData.phoneNumber}
               onChange={handleChange}
             />
           </div>
@@ -161,7 +233,7 @@ const Profile = () => {
               type="text"
               name="city"
               placeholder="City"
-              value={formData.city}
+              value={editFormData.city}
               onChange={handleChange}
             />
           </div>
@@ -171,7 +243,7 @@ const Profile = () => {
               type="text"
               name="pincode"
               placeholder="Pincode"
-              value={formData.pincode}
+              value={editFormData.pincode}
               onChange={handleChange}
             />
           </div>

@@ -12,6 +12,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@temporalio/client": "^1.11.8",
+    "@temporalio/common": "^1.11.8",
+    "@temporalio/worker": "^1.11.8",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",

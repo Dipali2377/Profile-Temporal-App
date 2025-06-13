@@ -4,6 +4,8 @@ import "./index.css";
 import { Auth0Provider } from "@auth0/auth0-react";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,5 +18,6 @@ createRoot(document.getElementById("root")).render(
         <App />
       </Auth0Provider>
     </BrowserRouter>
+    <ToastContainer position="top-right" autoClose={3000} />
   </StrictMode>
 );

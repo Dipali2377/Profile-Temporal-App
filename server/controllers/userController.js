@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import { Connection, Client } from "@temporalio/client";
 
 const getAllUsers = async (req, res) => {
   try {
@@ -52,25 +53,48 @@ const getUserByEmail = async (req, res) => {
   }
 };
 
+// const updateUserByEmail = async (req, res) => {
+//   const { email } = req.params;
+//   const updatedData = req.body;
+
+//   try {
+//     const updatedUser = await userModel.findOneAndUpdate(
+//       { email },
+//       updatedData,
+//       { new: true }
+//     );
+
+//     if (!updatedUser) {
+//       return res.status(404).json({ error: "User not found" });
+//     }
+
+//     res.status(200).json({ message: "User updated", user: updatedUser });
+//   } catch (error) {
+//     console.error("Error updating user:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
+
 const updateUserByEmail = async (req, res) => {
   const { email } = req.params;
   const updatedData = req.body;
 
   try {
-    const updatedUser = await userModel.findOneAndUpdate(
-      { email },
-      updatedData,
-      { new: true }
-    );
+    const connection = await Connection.connect();
+    const client = new Client({ connection });
 
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    const handle = await client.workflow.start("saveUserDataWorkflow", {
+      args: [{ email, ...updatedData }],
+      taskQueue: "user-profile-task-queue",
+      workflowId: `update-${email}-${Date.now()}`,
+    });
 
-    res.status(200).json({ message: "User updated", user: updatedUser });
+    console.log(`Workflow started: ${handle.workflowId}`);
+
+    res.status(200).json({ message: "Workflow started to update user." });
   } catch (error) {
-    console.error("Error updating user:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error starting workflow:", error);
+    res.status(500).json({ error: "Failed to update user via workflow." });
   }
 };
 
