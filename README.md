@@ -146,6 +146,16 @@ Run Temporal Docker Services
 
 Open your browser and visit: http://localhost:8233 — you should see the Temporal Web UI
 
+## Temporal Dashboard with Workflows
+
+### 🔹 Workflows
+
+## ![Workflows Page](./client//src/assets/workflows.jpeg)
+
+### 🔹 Workflows Details
+
+## ![Workflows Details Page](./client//src/assets/workflow-dashboard.jpeg)
+
 ---
 
 ## 🧪 API Endpoints
