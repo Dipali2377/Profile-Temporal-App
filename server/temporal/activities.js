@@ -1,17 +1,32 @@
+// server/temporal/activities.js
 import axios from "axios";
+import userModel from "../models/userModel.js";
+import connectDB from "../config/db.js";
 
-// Simulated DB save (you can connect this to your DB service)
-export async function saveToDatabase(userData) {
-  console.log("✅ Saving to local DB:", userData);
-  // Simulate DB save delay
-  return new Promise((resolve) =>
-    setTimeout(() => resolve("Saved to DB"), 1000)
-  );
-}
+export async function saveToCrudCrud(userData) {
+  const { email, firstName, lastName } = userData;
 
-// Update crudcrud with a 10-second delay
-export async function updateCrudCrud(userData) {
-  console.log("🕒 Waiting 10 seconds before updating CrudCrud...");
+  // ✅ Connect to MongoDB
+  await connectDB();
+
+  // ✅ Update MongoDB user
+  try {
+    const updated = await userModel.findOneAndUpdate(
+      { email },
+      { firstName, lastName },
+      { new: true }
+    );
+
+    if (updated) {
+      console.log("✅ MongoDB user updated:", updated);
+    } else {
+      console.log("⚠️ User not found in MongoDB");
+    }
+  } catch (err) {
+    console.error("❌ MongoDB update failed:", err.message);
+  }
+
+  // ✅ Also update CrudCrud (optional delay)
   await new Promise((resolve) => setTimeout(resolve, 10000)); // 10s delay
 
   try {
@@ -22,7 +37,6 @@ export async function updateCrudCrud(userData) {
     console.log("✅ CrudCrud updated:", response.data);
     return response.data;
   } catch (error) {
-    console.error("❌ Failed to update CrudCrud:", error.message);
-    throw error;
+    console.error("❌ CrudCrud update failed:", error.message);
   }
 }
