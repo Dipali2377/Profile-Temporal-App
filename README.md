@@ -131,9 +131,9 @@ This will:
 
 Start all required Temporal services (frontend, matching, history, worker)
 
-Start a Temporal Web UI (default port: http://localhost:8233)
+Start a Temporal Web UI (default port: http://localhost:8080)
 
-Open your browser and visit: http://localhost:8233 — you should see the Temporal Web UI
+Open your browser and visit: http://localhost:8080 — you should see the Temporal Web UI
 
 if you get any error
 Try Pulling the Image Manually
