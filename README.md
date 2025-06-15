@@ -211,6 +211,28 @@ Profile-Temporal-App/
 
 ```
 
+## How Flow Works ➡️⬇️
+
+```bash
+
+User PUT /users/:email
+   ↓
+Express Controller starts workflow:
+   saveUserDataWorkflow
+   ↓ (10 seconds sleep)
+Temporal Workflow calls Activity:
+   saveToCrudCrud
+   ↓
+MongoDB updated + data sent to CrudCrud
+   ↓
+Activity completes
+   ↓
+Workflow completes
+
+
+
+```
+
 ```bash
 git clone https://github.com/Dipali2377/Profile-Temporal-App.git
 cd Profile-Temporal-App
