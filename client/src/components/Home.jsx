@@ -25,7 +25,6 @@ const Home = () => {
           </p>
         )}
       </div>
-      {/* Optional: Add decorative background shapes here if desired via CSS pseudo-elements */}
     </div>
   );
 };
